@@ -1,0 +1,170 @@
+{
+  "products": {
+    "records": [
+      {
+        "id": "recProdLionelo001",
+        "createdTime": "2026-03-19T09:00:00.000Z",
+        "fields": {
+          "SKU": "LIO-EMMA-PLUS",
+          "Brand": "lionelo",
+          "Name": "Lionelo Emma Plus",
+          "BrandContentRecord": ["recLioneloContent001"]
+        }
+      },
+      {
+        "id": "recProdLionelo002",
+        "createdTime": "2026-03-19T09:05:00.000Z",
+        "fields": {
+          "SKU": "LIO-BASTIAAN-I-SIZE",
+          "Brand": "lionelo",
+          "Name": "Lionelo Bastiaan i-Size",
+          "BrandContentRecord": ["recLioneloContent002"]
+        }
+      },
+      {
+        "id": "recProdOvermax001",
+        "createdTime": "2026-03-19T09:10:00.000Z",
+        "fields": {
+          "SKU": "OVX-MULTIPIC-50",
+          "Brand": "overmax",
+          "Name": "Overmax Multipic 5.0",
+          "BrandContentRecord": ["recOvermaxContent001"]
+        }
+      },
+      {
+        "id": "recProdOvermax002",
+        "createdTime": "2026-03-19T09:15:00.000Z",
+        "fields": {
+          "SKU": "OVX-SOUNDBEAT-20",
+          "Brand": "overmax",
+          "Name": "Overmax Soundbeat 2.0",
+          "BrandContentRecord": ["recOvermaxContent002"]
+        }
+      },
+      {
+        "id": "recProdPeluvio001",
+        "createdTime": "2026-03-19T09:20:00.000Z",
+        "fields": {
+          "SKU": "PEL-HAIR-DRY-01",
+          "Brand": "peluvio",
+          "Name": "Peluvio HairDry 01",
+          "BrandContentRecord": ["recPeluvioContent001"]
+        }
+      },
+      {
+        "id": "recProdPeluvio002",
+        "createdTime": "2026-03-19T09:25:00.000Z",
+        "fields": {
+          "SKU": "PEL-FACE-BRUSH-02",
+          "Brand": "peluvio",
+          "Name": "Peluvio Face Brush 02",
+          "BrandContentRecord": ["recPeluvioContent002"]
+        }
+      }
+    ]
+  },
+  "lionelo_content": {
+    "records": [
+      {
+        "id": "recLioneloContent001",
+        "createdTime": "2026-03-19T09:30:00.000Z",
+        "fields": {
+          "hero_title": "Spacerówka na co dzień i w podróży",
+          "hero_text": "Lionelo Emma Plus to lekka spacerówka zaprojektowana z myślą o wygodnych spacerach w mieście i poza nim.",
+          "feature_1_title": "Składanie jedną ręką",
+          "feature_1_text": "Szybki mechanizm składania ułatwia pakowanie wózka do bagażnika i codzienne użytkowanie.",
+          "feature_1_path": "/images/lionelo/emma-plus/",
+          "feature_1_picture": "fold.webp",
+          "feature_2_title": "Regulowane oparcie",
+          "feature_2_text": "Płynna regulacja pozwala dopasować pozycję dziecka do aktualnych potrzeb.",
+          "feature_2_path": "/images/lionelo/emma-plus/",
+          "feature_2_picture": "backrest.webp",
+          "set_title": "Zawartość zestawu",
+          "set_text": "W zestawie znajduje się spacerówka, pałąk, osłona na nogi i instrukcja obsługi."
+        }
+      },
+      {
+        "id": "recLioneloContent002",
+        "createdTime": "2026-03-19T09:35:00.000Z",
+        "fields": {
+          "hero_title": "Fotelik zaprojektowany do dłuższego użytkowania",
+          "hero_text": "Lionelo Bastiaan i-Size wspiera bezpieczne podróżowanie dziecka na kolejnych etapach wzrostu.",
+          "safety_title": "Rozwiązania zwiększające bezpieczeństwo",
+          "safety_text": "System ISOFIX, dodatkowa ochrona boczna i możliwość przewożenia tyłem do kierunku jazdy pomagają zadbać o bezpieczeństwo w trasie.",
+          "comfort_title": "Wygoda na co dzień",
+          "comfort_text": "Regulowany zagłówek i wkładka redukcyjna poprawiają komfort podczas krótszych i dłuższych przejazdów.",
+          "gallery_path": "/images/lionelo/bastiaan-isize/",
+          "gallery_main_picture": "hero.webp"
+        }
+      }
+    ]
+  },
+  "overmax_content": {
+    "records": [
+      {
+        "id": "recOvermaxContent001",
+        "createdTime": "2026-03-19T09:40:00.000Z",
+        "fields": {
+          "intro_heading": "Domowa rozrywka na dużym ekranie",
+          "intro_body": "Overmax Multipic 5.0 to kompaktowy projektor do codziennego oglądania filmów, seriali i materiałów wideo.",
+          "benefit_1_title": "Kompaktowa konstrukcja",
+          "benefit_1_text": "Niewielkie rozmiary ułatwiają przenoszenie i ustawienie projektora w różnych pomieszczeniach.",
+          "benefit_2_title": "Łączność bezprzewodowa",
+          "benefit_2_text": "Projektor wspiera wygodne przesyłanie obrazu z kompatybilnych urządzeń mobilnych.",
+          "assets_path": "/images/overmax/multipic-50/",
+          "hero_picture": "projector.webp",
+          "box_title": "W zestawie",
+          "box_text": "Projektor, pilot, zasilacz i instrukcja użytkownika."
+        }
+      },
+      {
+        "id": "recOvermaxContent002",
+        "createdTime": "2026-03-19T09:45:00.000Z",
+        "fields": {
+          "intro_heading": "Muzyka zawsze pod ręką",
+          "intro_body": "Overmax Soundbeat 2.0 to przenośny głośnik Bluetooth zaprojektowany do codziennego słuchania muzyki w domu i poza nim.",
+          "use_case_1_title": "Na taras i do ogrodu",
+          "use_case_1_text": "Kompaktowa forma i odporność na zachlapania wspierają użytkowanie na zewnątrz.",
+          "use_case_2_title": "W podróży",
+          "use_case_2_text": "Lekka obudowa ułatwia zabranie głośnika na wyjazd lub spotkanie ze znajomymi.",
+          "gallery_path": "/images/overmax/soundbeat-20/",
+          "gallery_main_picture": "speaker.webp"
+        }
+      }
+    ]
+  },
+  "peluvio_content": {
+    "records": [
+      {
+        "id": "recPeluvioContent001",
+        "createdTime": "2026-03-19T09:50:00.000Z",
+        "fields": {
+          "lead_title": "Szybsze suszenie i wygodna stylizacja",
+          "lead_text": "Peluvio HairDry 01 pomaga sprawnie wysuszyć włosy i przygotować fryzurę na co dzień.",
+          "benefit_primary_title": "Regulacja temperatury",
+          "benefit_primary_text": "Kilka poziomów temperatury ułatwia dopasowanie pracy suszarki do rodzaju włosów i oczekiwanego efektu.",
+          "routine_step_1_title": "Codzienne suszenie",
+          "routine_step_1_text": "Ergonomiczny uchwyt i wygodna konstrukcja wspierają komfort użytkowania.",
+          "asset_base_path": "/images/peluvio/hairdry-01/",
+          "hero_picture": "dryer.webp"
+        }
+      },
+      {
+        "id": "recPeluvioContent002",
+        "createdTime": "2026-03-19T09:55:00.000Z",
+        "fields": {
+          "lead_title": "Codzienna pielęgnacja skóry twarzy",
+          "lead_text": "Peluvio Face Brush 02 wspiera delikatne oczyszczanie skóry i wygodną pielęgnację w domu oraz w podróży.",
+          "benefit_primary_title": "Kompaktowy format",
+          "benefit_primary_text": "Niewielkie rozmiary ułatwiają przechowywanie urządzenia i zabranie go do kosmetyczki.",
+          "routine_step_1_title": "Użycie w łazience",
+          "routine_step_1_text": "Wodoodporna konstrukcja poprawia wygodę codziennego użytkowania.",
+          "routine_step_2_title": "Ładowanie USB",
+          "routine_step_2_text": "Urządzenie można wygodnie ładować za pomocą dołączonego przewodu.",
+          "asset_base_path": "/images/peluvio/face-brush-02/",
+          "hero_picture": "face-brush.webp"
+        }
+      }
+    ]
+  }
+}

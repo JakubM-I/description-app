@@ -31,12 +31,20 @@ export const useHtmlGenerator = () => {
   const resolveContext = async (
     context: Omit<GeneratorContext, 'detailRecord'>,
   ): Promise<GeneratorContext> => {
-    const detailRecord = context.product.detailRecordId
-      ? await getProductDetail({
-          brand: context.brand,
-          detailRecordId: context.product.detailRecordId,
-        })
-      : null
+    if (!context.product.detailRecordId) {
+      throw new Error(
+        'Wybrany produkt nie ma powiązanego rekordu treści w polu BrandContentRecord.',
+      )
+    }
+
+    const detailRecord = await getProductDetail({
+      brand: context.brand,
+      detailRecordId: context.product.detailRecordId,
+    })
+
+    if (!detailRecord) {
+      throw new Error('Nie udało się odnaleźć rekordu szczegółowego dla wybranego produktu.')
+    }
 
     return {
       ...context,
@@ -58,19 +66,24 @@ export const useHtmlGenerator = () => {
       setState((currentState) => ({
         ...currentState,
         htmlCode,
+        previewBlocks: [],
         isBusy: false,
         isHtmlModalOpen: true,
+        isTextPreviewModalOpen: false,
       }))
     } catch (error: unknown) {
       const message =
         error instanceof Error
           ? error.message
-          : 'Nie udało się przygotować placeholdera HTML.'
+          : 'Nie udało się wygenerować kodu HTML.'
 
       setState((currentState) => ({
         ...currentState,
+        htmlCode: '',
         isBusy: false,
         error: message,
+        isHtmlModalOpen: false,
+        isTextPreviewModalOpen: false,
       }))
     }
   }
@@ -90,20 +103,25 @@ export const useHtmlGenerator = () => {
 
       setState((currentState) => ({
         ...currentState,
+        htmlCode: '',
         previewBlocks,
         isBusy: false,
+        isHtmlModalOpen: false,
         isTextPreviewModalOpen: true,
       }))
     } catch (error: unknown) {
       const message =
         error instanceof Error
           ? error.message
-          : 'Nie udało się przygotować placeholdera preview.'
+          : 'Nie udało się wygenerować podglądu tekstowego.'
 
       setState((currentState) => ({
         ...currentState,
+        previewBlocks: [],
         isBusy: false,
         error: message,
+        isHtmlModalOpen: false,
+        isTextPreviewModalOpen: false,
       }))
     }
   }
@@ -122,11 +140,16 @@ export const useHtmlGenerator = () => {
     }))
   }
 
+  const resetResults = () => {
+    setState(initialState)
+  }
+
   return {
     ...state,
     openHtmlModal,
     openTextPreviewModal,
     closeHtmlModal,
     closeTextPreviewModal,
+    resetResults,
   }
 }

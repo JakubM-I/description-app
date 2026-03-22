@@ -1,92 +1,128 @@
+import { BRAND_DETAIL_TABLE_MAP } from '../config/brands'
 import type {
   AirtableRecord,
+  AirtableRecordFields,
   BrandId,
+  DetailTableName,
+  MockAirtableResponse,
   ProductListItem,
 } from '../features/generator/types'
 import type { ProductsRepository } from './products.repository'
 
-const sampleProducts: ProductListItem[] = [
-  {
-    productRecordId: 'recProdLionelo001',
-    detailRecordId: 'recLioneloContent001',
-    brand: 'lionelo',
-    sku: 'LIO-EMMA-PLUS',
-    name: 'Lionelo Emma Plus',
-    label: 'Lionelo Emma Plus (LIO-EMMA-PLUS)',
-  },
-  {
-    productRecordId: 'recProdOvermax001',
-    detailRecordId: 'recOvermaxContent001',
-    brand: 'overmax',
-    sku: 'OVX-MULTIPIC-50',
-    name: 'Overmax Multipic 5.0',
-    label: 'Overmax Multipic 5.0 (OVX-MULTIPIC-50)',
-  },
-  {
-    productRecordId: 'recProdPeluvio001',
-    detailRecordId: 'recPeluvioContent001',
-    brand: 'peluvio',
-    sku: 'PEL-HAIR-DRY-01',
-    name: 'Peluvio HairDry 01',
-    label: 'Peluvio HairDry 01 (PEL-HAIR-DRY-01)',
-  },
-]
+const MOCK_DATA_PATH = `${import.meta.env.BASE_URL}data/mock-airtable-response.json`
 
-const sampleDetails: Record<BrandId, Record<string, AirtableRecord>> = {
-  lionelo: {
-    recLioneloContent001: {
-      id: 'recLioneloContent001',
-      createdTime: '2026-03-19T09:30:00.000Z',
-      fields: {
-        hero_title: 'Spacerówka na co dzień i w podróży',
-        hero_text:
-          'Placeholder detail record przygotowany pod finalne mapowanie treści Lionelo.',
-        feature_1_title: 'Składanie jedną ręką',
-        feature_1_text: 'W Etapie 1 ten blok będzie budowany z lokalnego mocka JSON.',
-        feature_1_path: '/images/lionelo/emma-plus/',
-        feature_1_picture: 'fold.webp',
-      },
-    },
-  },
-  overmax: {
-    recOvermaxContent001: {
-      id: 'recOvermaxContent001',
-      createdTime: '2026-03-19T09:40:00.000Z',
-      fields: {
-        intro_heading: 'Domowa rozrywka na dużym ekranie',
-        intro_body:
-          'Placeholder detail record przygotowany pod finalne mapowanie treści Overmax.',
-        benefit_1_title: 'Kompaktowa konstrukcja',
-        benefit_1_text:
-          'Repo mock można później bez przebudowy podmienić na Netlify Functions.',
-        assets_path: '/images/overmax/multipic-50/',
-        hero_picture: 'projector.webp',
-      },
-    },
-  },
-  peluvio: {
-    recPeluvioContent001: {
-      id: 'recPeluvioContent001',
-      createdTime: '2026-03-19T09:50:00.000Z',
-      fields: {
-        lead_title: 'Szybsze suszenie i wygodna stylizacja',
-        lead_text:
-          'Placeholder detail record przygotowany pod finalne mapowanie treści Peluvio.',
-        benefit_primary_title: 'Regulacja temperatury',
-        benefit_primary_text: 'W kolejnych etapach treść będzie pochodzić z modelu Airtable.',
-        asset_base_path: '/images/peluvio/hairdry-01/',
-        hero_picture: 'dryer.webp',
-      },
-    },
-  },
+let mockDataPromise: Promise<MockAirtableResponse> | null = null
+
+const readString = (
+  fields: AirtableRecordFields,
+  key: string,
+): string | null => {
+  const value = fields[key]
+
+  return typeof value === 'string' && value.trim() ? value : null
+}
+
+const readLinkedRecordId = (fields: AirtableRecordFields) => {
+  const linkedRecords = fields.BrandContentRecord
+
+  if (!Array.isArray(linkedRecords)) {
+    return null
+  }
+
+  const firstLinkedRecord = linkedRecords[0]
+
+  return typeof firstLinkedRecord === 'string' && firstLinkedRecord.trim()
+    ? firstLinkedRecord
+    : null
+}
+
+const normalizeProduct = (record: AirtableRecord): ProductListItem | null => {
+  const brand = readString(record.fields, 'Brand')
+  const name = readString(record.fields, 'Name')
+
+  if (!brand || !name) {
+    return null
+  }
+
+  if (!Object.prototype.hasOwnProperty.call(BRAND_DETAIL_TABLE_MAP, brand)) {
+    return null
+  }
+
+  const sku = readString(record.fields, 'SKU') ?? ''
+  const typedBrand = brand as BrandId
+  const detailRecordId = readLinkedRecordId(record.fields)
+  const label = sku ? `${name} (${sku})` : name
+
+  return {
+    productRecordId: record.id,
+    detailRecordId,
+    brand: typedBrand,
+    sku,
+    name,
+    label,
+  }
+}
+
+const loadMockData = async (): Promise<MockAirtableResponse> => {
+  if (!mockDataPromise) {
+    mockDataPromise = fetch(MOCK_DATA_PATH).then(async (response) => {
+      if (!response.ok) {
+        throw new Error('Nie udało się wczytać lokalnych mock danych.')
+      }
+
+      return (await response.json()) as MockAirtableResponse
+    })
+  }
+
+  return mockDataPromise
+}
+
+const getDetailTableName = (brand: BrandId): DetailTableName => {
+  const tableName = BRAND_DETAIL_TABLE_MAP[brand]
+
+  if (!tableName) {
+    throw new Error(`Brak mapowania tabeli szczegółowej dla marki "${brand}".`)
+  }
+
+  return tableName
+}
+
+const getDetailRecords = (
+  mockData: MockAirtableResponse,
+  brand: BrandId,
+): AirtableRecord[] => {
+  const tableName = getDetailTableName(brand)
+  const table = mockData[tableName]
+
+  if (!table || !Array.isArray(table.records)) {
+    throw new Error(`Brak tabeli "${tableName}" w lokalnym mocku danych.`)
+  }
+
+  return table.records
 }
 
 export const mockProductsRepository: ProductsRepository = {
   async getProductsByBrand(brand) {
-    return sampleProducts.filter((product) => product.brand === brand)
+    const mockData = await loadMockData()
+    const records = mockData.products?.records ?? []
+
+    return records
+      .map(normalizeProduct)
+      .filter((product): product is ProductListItem => product !== null)
+      .filter((product) => product.brand === brand)
   },
 
   async getProductDetail({ brand, detailRecordId }) {
-    return sampleDetails[brand][detailRecordId] ?? null
+    const mockData = await loadMockData()
+    const detailRecords = getDetailRecords(mockData, brand)
+    const detailRecord = detailRecords.find((record) => record.id === detailRecordId)
+
+    if (!detailRecord) {
+      throw new Error(
+        `Nie znaleziono rekordu szczegółowego "${detailRecordId}" dla marki "${brand}".`,
+      )
+    }
+
+    return detailRecord
   },
 }

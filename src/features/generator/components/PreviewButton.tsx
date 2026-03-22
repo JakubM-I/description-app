@@ -10,6 +10,6 @@ export const PreviewButton = ({
   disabled = false,
 }: PreviewButtonProps) => (
   <Button disabled={disabled} variant="secondary" onClick={onClick}>
-    Podgląd tekstowy
+    Generuj podgląd
   </Button>
 )

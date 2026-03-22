@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { Button } from '../../../components/ui/Button'
 import { Modal } from '../../../components/ui/Modal'
@@ -17,6 +17,12 @@ export const HtmlCodeModal = ({
 }: HtmlCodeModalProps) => {
   const [copyState, setCopyState] = useState<'idle' | 'success' | 'error'>('idle')
 
+  useEffect(() => {
+    if (!isOpen) {
+      setCopyState('idle')
+    }
+  }, [isOpen, code])
+
   const handleCopy = async () => {
     try {
       await copyText(code)
@@ -30,25 +36,26 @@ export const HtmlCodeModal = ({
     <Modal isOpen={isOpen} title="Wygenerowany HTML" onClose={onClose}>
       <div className="result-panel">
         <p className="result-panel__text">
-          Etap 0 udostępnia placeholder gotowy pod finalny generator marki.
+          Wynik został wygenerowany lokalnie na podstawie mock danych i lekkiego,
+          brand-aware generatora Etapu 1.
         </p>
         <pre className="result-panel__code">
           <code>{code}</code>
         </pre>
         <div className="result-panel__actions">
-          <Button variant="secondary" onClick={handleCopy}>
-            Kopiuj placeholder
+          <Button disabled={!code} variant="secondary" onClick={handleCopy}>
+            Kopiuj do schowka
           </Button>
           <Button variant="ghost" onClick={onClose}>
             Zamknij
           </Button>
         </div>
         {copyState === 'success' ? (
-          <p className="status-message">Placeholder został skopiowany do schowka.</p>
+          <p className="status-message">Kod HTML został skopiowany do schowka.</p>
         ) : null}
         {copyState === 'error' ? (
           <p className="status-message status-message--error">
-            Nie udało się skopiować treści.
+            Nie udało się skopiować kodu HTML.
           </p>
         ) : null}
       </div>

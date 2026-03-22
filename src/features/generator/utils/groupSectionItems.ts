@@ -1,14 +1,14 @@
-import type { SectionItem } from '../types'
+import type { ContentBlock } from '../types'
 
 export const groupSectionItems = (
-  items: SectionItem[],
+  items: ContentBlock[],
   groupSize = 2,
-): SectionItem[][] => {
+): ContentBlock[][] => {
   if (groupSize <= 0) {
     return [items]
   }
 
-  const groups: SectionItem[][] = []
+  const groups: ContentBlock[][] = []
 
   for (let index = 0; index < items.length; index += groupSize) {
     groups.push(items.slice(index, index + groupSize))

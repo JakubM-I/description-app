@@ -20,33 +20,41 @@ export type ProductListItem = {
   label: string
 }
 
+export type AirtableRecordFields = Record<string, unknown>
+
 export type AirtableRecord = {
   id: string
   createdTime?: string
-  fields: Record<string, unknown>
+  fields: AirtableRecordFields
 }
 
-export type SectionItem = {
+export type AirtableTable = {
+  records: AirtableRecord[]
+}
+
+export type MockAirtableResponse = {
+  products: AirtableTable
+  lionelo_content: AirtableTable
+  overmax_content: AirtableTable
+  peluvio_content: AirtableTable
+}
+
+export type ContentBlock = {
   title: string | null
   text: string | null
   imageUrl: string | null
 }
 
-export type MappedDetailRecord = {
-  heroTitle: string
-  heroText: string
-  assetBasePath: string | null
-  sectionItems: SectionItem[]
+export type ContentSection = {
+  id: string
+  title: string
+  items: ContentBlock[]
 }
 
-export type NormalizedProduct = {
+export type BrandContentDocument = {
   brand: BrandId
-  sku: string
-  name: string
-  heroTitle: string
-  heroText: string
-  sections: SectionItem[]
-  assetBasePath: string | null
+  intro: ContentBlock | null
+  sections: ContentSection[]
 }
 
 export type GeneratorContext = {

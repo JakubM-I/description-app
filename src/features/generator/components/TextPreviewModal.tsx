@@ -1,3 +1,4 @@
+import { Button } from '../../../components/ui/Button'
 import { Modal } from '../../../components/ui/Modal'
 import type { PreviewBlock } from '../types'
 
@@ -15,22 +16,32 @@ export const TextPreviewModal = ({
   <Modal isOpen={isOpen} title="Podgląd tekstowy" onClose={onClose}>
     <div className="preview-panel">
       <p className="preview-panel__intro">
-        To jest prosty popup przygotowany pod przyszły preview tekstowy.
+        Podgląd pokazuje wyłącznie treści tekstowe wybranego rekordu, bez grafik i
+        bez odwzorowania docelowego layoutu HTML 1:1.
       </p>
       <div className="preview-panel__blocks">
-        {blocks.map((block, index) => (
-          <section className="preview-panel__block" key={`${block.title}-${index}`}>
-            {block.title ? (
-              <h3 className="preview-panel__title">{block.title}</h3>
-            ) : null}
-            {block.text ? <p className="preview-panel__text">{block.text}</p> : null}
+        {blocks.length === 0 ? (
+          <section className="preview-panel__block">
+            <h3 className="preview-panel__title">Brak treści</h3>
+            <p className="preview-panel__text">
+              Wybrany rekord nie zawiera tekstowych bloków do pokazania w podglądzie.
+            </p>
           </section>
-        ))}
+        ) : (
+          blocks.map((block, index) => (
+            <section className="preview-panel__block" key={`${block.title}-${index}`}>
+              {block.title ? (
+                <h3 className="preview-panel__title">{block.title}</h3>
+              ) : null}
+              {block.text ? <p className="preview-panel__text">{block.text}</p> : null}
+            </section>
+          ))
+        )}
       </div>
       <div className="result-panel__actions">
-        <button className="preview-panel__close" type="button" onClick={onClose}>
+        <Button variant="secondary" onClick={onClose}>
           Zamknij
-        </button>
+        </Button>
       </div>
     </div>
   </Modal>

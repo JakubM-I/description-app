@@ -18,6 +18,10 @@ export const App = () => {
   const { products, isLoading, error: productsError } = useProducts(selectedBrand)
   const generator = useHtmlGenerator()
 
+  const selectedBrandOption = selectedBrand
+    ? BRAND_OPTIONS.find((brand) => brand.id === selectedBrand) ?? null
+    : null
+
   const selectedProduct =
     products.find((product) => product.productRecordId === selectedProductId) ?? null
 
@@ -26,6 +30,12 @@ export const App = () => {
   const handleBrandChange = (brand: BrandId | null) => {
     setSelectedBrand(brand)
     setSelectedProductId('')
+    generator.resetResults()
+  }
+
+  const handleProductChange = (productId: string) => {
+    setSelectedProductId(productId)
+    generator.resetResults()
   }
 
   const handleHtmlGeneration = () => {
@@ -50,15 +60,65 @@ export const App = () => {
     })
   }
 
+  const statusMessage = (() => {
+    if (productsError) {
+      return {
+        tone: 'error',
+        text: productsError,
+      }
+    }
+
+    if (generator.error) {
+      return {
+        tone: 'error',
+        text: generator.error,
+      }
+    }
+
+    if (!selectedBrand) {
+      return {
+        tone: 'default',
+        text: 'Wybierz markę, aby wczytać listę produktów z lokalnego mocka.',
+      }
+    }
+
+    if (isLoading) {
+      return {
+        tone: 'default',
+        text: `Ładowanie produktów dla marki ${selectedBrandOption?.label ?? selectedBrand}...`,
+      }
+    }
+
+    if (products.length === 0) {
+      return {
+        tone: 'default',
+        text: 'Brak produktów dla wybranej marki w lokalnym mocku danych.',
+      }
+    }
+
+    if (!selectedProduct) {
+      return {
+        tone: 'default',
+        text: 'Wybierz produkt, aby odblokować generowanie kodu HTML i podglądu tekstowego.',
+      }
+    }
+
+    return {
+      tone: 'default',
+      text: 'Produkt jest gotowy. Możesz wygenerować kod HTML albo podgląd tekstowy.',
+    }
+  })()
+
   return (
     <>
       <div className="app-shell">
         <header className="app-shell__header">
-          <p className="app-shell__eyebrow">Etap 0 • setup projektu</p>
+          <p className="app-shell__eyebrow">Etap 1 • mock data + UI flow</p>
           <h1 className="app-shell__title">Generator opisów produktów</h1>
           <p className="app-shell__lead">
-            Lekki szkielet aplikacji przygotowany pod dwa wyniki po wyborze
-            produktu: kod HTML oraz prosty podgląd tekstowy w osobnym popupie.
+            Aplikacja działa lokalnie na mock danych i prowadzi przez pełny,
+            podstawowy przepływ: wybór marki, wybór produktu, generowanie HTML
+            oraz tekstowego podglądu w osobnych modalach.
           </p>
         </header>
 
@@ -67,12 +127,12 @@ export const App = () => {
             <div className="panel__intro">
               <p className="panel__kicker">Jednookienny MVP bez routingu</p>
               <h2 className="panel__title" id="generator-heading">
-                Szkielet formularza generatora
+                Etap 1: wybierz markę i produkt
               </h2>
               <p className="panel__text">
-                UI jest gotowe pod wybór marki, pobranie listy produktów, otwieranie
-                modala HTML i modala preview. Finalna logika generatora oraz pełna
-                integracja z Airtable należą do kolejnych etapów.
+                Lista produktów jest pobierana z tabeli <code>products</code> w
+                lokalnym mocku, a właściwy rekord szczegółowy jest odczytywany po
+                <code> BrandContentRecord[0]</code> dopiero przy generowaniu wyniku.
               </p>
             </div>
 
@@ -83,7 +143,7 @@ export const App = () => {
                 isLoading={isLoading}
                 products={products}
                 value={selectedProductId}
-                onChange={setSelectedProductId}
+                onChange={handleProductChange}
               />
 
               <div className="generator-form__actions">
@@ -98,54 +158,47 @@ export const App = () => {
               </div>
 
               <div className="generator-form__status" aria-live="polite">
-                {productsError ? (
-                  <p className="status-message status-message--error">
-                    {productsError}
-                  </p>
-                ) : null}
-
-                {generator.error ? (
-                  <p className="status-message status-message--error">
-                    {generator.error}
-                  </p>
-                ) : null}
-
-                {!productsError && !generator.error ? (
-                  <p className="status-message">
-                    Dostępne marki: {BRAND_OPTIONS.map((brand) => brand.label).join(', ')}.
-                  </p>
-                ) : null}
+                <p
+                  className={
+                    statusMessage.tone === 'error'
+                      ? 'status-message status-message--error'
+                      : 'status-message'
+                  }
+                >
+                  {statusMessage.text}
+                </p>
               </div>
             </div>
           </section>
 
           <section className="panel panel--notes" aria-labelledby="setup-heading">
             <h2 className="panel__title" id="setup-heading">
-              Co jest gotowe po setupie
+              Co działa w Etapie 1
             </h2>
 
             <div className="setup-grid">
               <article className="setup-card">
-                <h3 className="setup-card__title">Warstwa danych</h3>
+                <h3 className="setup-card__title">Mock danych</h3>
                 <p className="setup-card__text">
-                  Istnieje kontrakt repozytorium produktów, mock repo oraz placeholder
-                  pod Netlify Functions i Airtable API.
+                  Repozytorium czyta lokalny JSON, filtruje tabelę produktów po marce
+                  i wyszukuje rekord szczegółowy we właściwej tabeli content.
                 </p>
               </article>
 
               <article className="setup-card">
-                <h3 className="setup-card__title">Warstwa generatorów</h3>
+                <h3 className="setup-card__title">Generatory marek</h3>
                 <p className="setup-card__text">
-                  Przygotowano rejestr szablonów HTML, placeholderowe usługi
-                  generowania oraz miejsce na brand-specific mapping.
+                  Każda marka ma własną, uproszczoną logikę HTML i preview opartą
+                  na danych runtime, bez zależności od plików z katalogu docs.
                 </p>
               </article>
 
               <article className="setup-card">
                 <h3 className="setup-card__title">UI i modale</h3>
                 <p className="setup-card__text">
-                  Formularz ma miejsce na wybór produktu oraz dwa osobne wyniki:
-                  modal HTML i modal tekstowego preview.
+                  Formularz blokuje akcje do czasu poprawnego wyboru produktu, a
+                  wyniki otwierają się w osobnych modalach z kopiowaniem HTML i
+                  czytelnym podglądem tekstowym.
                 </p>
               </article>
             </div>

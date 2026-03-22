@@ -10,6 +10,6 @@ export const GenerateButton = ({
   disabled = false,
 }: GenerateButtonProps) => (
   <Button disabled={disabled} onClick={onClick}>
-    Generuj HTML
+    Generuj kod HTML
   </Button>
 )

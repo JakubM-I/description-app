@@ -15,10 +15,6 @@ export const TextPreviewModal = ({
 }: TextPreviewModalProps) => (
   <Modal isOpen={isOpen} title="Podgląd tekstowy" onClose={onClose}>
     <div className="preview-panel">
-      <p className="preview-panel__intro">
-        Podgląd pokazuje wyłącznie treści tekstowe wybranego rekordu, bez grafik i
-        bez odwzorowania docelowego layoutu HTML 1:1.
-      </p>
       <div className="preview-panel__blocks">
         {blocks.length === 0 ? (
           <section className="preview-panel__block">

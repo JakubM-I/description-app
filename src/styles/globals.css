@@ -79,7 +79,7 @@ textarea {
 
 .app-shell__title {
   font-size: clamp(2.6rem, 4vw, 4.5rem);
-  max-width: 12ch;
+  max-width: none;
 }
 
 .app-shell__lead,

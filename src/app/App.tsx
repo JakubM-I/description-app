@@ -117,29 +117,15 @@ export const App = () => {
     <>
       <div className="app-shell">
         <header className="app-shell__header">
-          <p className="app-shell__eyebrow">Etap 1 • mock data + UI flow</p>
           <h1 className="app-shell__title">Generator opisów produktów</h1>
-          <p className="app-shell__lead">
-            Aplikacja prowadzi przez pełny, podstawowy przepływ: wybór marki,
-            wybór produktu, generowanie HTML oraz tekstowego podglądu w osobnych
-            modalach. Źródło danych jest przełączane konfiguracją środowiskową.
-          </p>
         </header>
 
         <main className="app-shell__main">
           <section className="panel panel--form" aria-labelledby="generator-heading">
             <div className="panel__intro">
-              <p className="panel__kicker">Jednookienny MVP bez routingu</p>
               <h2 className="panel__title" id="generator-heading">
-                Etap 1: wybierz markę i produkt
+                Wybierz markę i produkt
               </h2>
-              <p className="panel__text">
-                Lista produktów jest pobierana z tabeli <code>products</code>, a
-                właściwy rekord szczegółowy jest odczytywany z brand-specific pola
-                linked record (
-                <code>Lionelo_Content</code>, <code>Peluvio_Content</code>,
-                <code>Overmax_Content</code>) dopiero przy generowaniu wyniku.
-              </p>
             </div>
 
             <div className="generator-form">
@@ -174,39 +160,6 @@ export const App = () => {
                   {statusMessage.text}
                 </p>
               </div>
-            </div>
-          </section>
-
-          <section className="panel panel--notes" aria-labelledby="setup-heading">
-            <h2 className="panel__title" id="setup-heading">
-              Co działa w Etapie 1
-            </h2>
-
-            <div className="setup-grid">
-              <article className="setup-card">
-                <h3 className="setup-card__title">Mock danych</h3>
-                <p className="setup-card__text">
-                  Repozytorium czyta lokalny JSON, filtruje tabelę produktów po marce
-                  i wyszukuje rekord szczegółowy we właściwej tabeli content.
-                </p>
-              </article>
-
-              <article className="setup-card">
-                <h3 className="setup-card__title">Generatory marek</h3>
-                <p className="setup-card__text">
-                  Każda marka ma własną, uproszczoną logikę HTML i preview opartą
-                  na danych runtime, bez zależności od plików z katalogu docs.
-                </p>
-              </article>
-
-              <article className="setup-card">
-                <h3 className="setup-card__title">UI i modale</h3>
-                <p className="setup-card__text">
-                  Formularz blokuje akcje do czasu poprawnego wyboru produktu, a
-                  wyniki otwierają się w osobnych modalach z kopiowaniem HTML i
-                  czytelnym podglądem tekstowym.
-                </p>
-              </article>
             </div>
           </section>
         </main>

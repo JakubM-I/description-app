@@ -47,14 +47,6 @@ export const Modal = ({ title, isOpen, onClose, children }: ModalProps) => {
           <h2 className="ui-modal__title" id="modal-title">
             {title}
           </h2>
-          <button
-            aria-label="Zamknij modal"
-            className="ui-modal__close"
-            type="button"
-            onClick={onClose}
-          >
-            Zamknij
-          </button>
         </div>
         <div className="ui-modal__content">{children}</div>
       </div>

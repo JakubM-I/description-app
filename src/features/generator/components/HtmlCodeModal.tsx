@@ -35,10 +35,6 @@ export const HtmlCodeModal = ({
   return (
     <Modal isOpen={isOpen} title="Wygenerowany HTML" onClose={onClose}>
       <div className="result-panel">
-        <p className="result-panel__text">
-          Wynik został wygenerowany lokalnie na podstawie mock danych i lekkiego,
-          brand-aware generatora Etapu 1.
-        </p>
         <pre className="result-panel__code">
           <code>{code}</code>
         </pre>

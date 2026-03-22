@@ -14,6 +14,10 @@ import type {
   PeluvioHero,
 } from '../types'
 
+const LIONELO_IMAGE_ROOT = '/img/cms/lionelo'
+const PELUVIO_IMAGE_ROOT = '/img/cms/peluvio'
+const OVERMAX_IMAGE_ROOT = '/img/cms/overmax'
+
 const readString = (
   fields: AirtableRecordFields,
   keys: string[],
@@ -32,13 +36,14 @@ const readString = (
 const hasTextContent = (values: Array<string | null>) => values.some(Boolean)
 
 const createImageData = (params: {
+  assetRoot: string
   path: string | null
   image: string | null
   alt: string | null
 }) => {
   const imageUrl =
     params.alt && params.path && params.image
-      ? buildImageUrl(params.path, params.image)
+      ? buildImageUrl(params.assetRoot, params.path, params.image)
       : null
 
   return {
@@ -58,6 +63,7 @@ const createLioneloItem = (params: {
   }
 
   const imageData = createImageData({
+    assetRoot: LIONELO_IMAGE_ROOT,
     path: params.path,
     image: params.image,
     alt: params.title,
@@ -98,6 +104,7 @@ const createOvermaxDetailItem = (params: {
 
   const popupKey = `item${params.index}`
   const imageData = createImageData({
+    assetRoot: OVERMAX_IMAGE_ROOT,
     path: params.path,
     image: params.image,
     alt: params.title,
@@ -219,6 +226,7 @@ const mapPeluvioHero = (fields: AirtableRecordFields): PeluvioHero | null => {
   }
 
   const imageData = createImageData({
+    assetRoot: PELUVIO_IMAGE_ROOT,
     path: readString(fields, ['description_image_path', 'asset_base_path']),
     image: readString(fields, ['description_image', 'hero_picture']),
     alt: title,

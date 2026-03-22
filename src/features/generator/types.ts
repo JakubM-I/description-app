@@ -5,10 +5,16 @@ export type DetailTableName =
   | 'overmax_content'
   | 'peluvio_content'
 
+export type LinkedContentFieldName =
+  | 'Lionelo_Content'
+  | 'Overmax_Content'
+  | 'Peluvio_Content'
+
 export type BrandConfig = {
   id: BrandId
   label: string
   detailTableName: DetailTableName
+  linkedContentFieldName: LinkedContentFieldName
 }
 
 export type ProductListItem = {

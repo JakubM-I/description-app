@@ -1,9 +1,13 @@
-import { BRAND_DETAIL_TABLE_MAP } from '../config/brands'
+import {
+  BRAND_DETAIL_TABLE_MAP,
+  BRAND_LINKED_CONTENT_FIELD_MAP,
+} from '../config/brands'
 import type {
   AirtableRecord,
   AirtableRecordFields,
   BrandId,
   DetailTableName,
+  LinkedContentFieldName,
   MockAirtableResponse,
   ProductListItem,
 } from '../features/generator/types'
@@ -22,8 +26,11 @@ const readString = (
   return typeof value === 'string' && value.trim() ? value : null
 }
 
-const readLinkedRecordId = (fields: AirtableRecordFields) => {
-  const linkedRecords = fields.BrandContentRecord
+const readLinkedRecordId = (
+  fields: AirtableRecordFields,
+  linkedContentFieldName: LinkedContentFieldName,
+) => {
+  const linkedRecords = fields[linkedContentFieldName]
 
   if (!Array.isArray(linkedRecords)) {
     return null
@@ -36,27 +43,48 @@ const readLinkedRecordId = (fields: AirtableRecordFields) => {
     : null
 }
 
-const normalizeProduct = (record: AirtableRecord): ProductListItem | null => {
-  const brand = readString(record.fields, 'Brand')
-  const name = readString(record.fields, 'Name')
+const getLinkedContentFieldName = (
+  brand: BrandId,
+): LinkedContentFieldName => {
+  const linkedContentFieldName = BRAND_LINKED_CONTENT_FIELD_MAP[brand]
 
-  if (!brand || !name) {
-    return null
+  if (!linkedContentFieldName) {
+    throw new Error(`Brak mapowania pola linked record dla marki "${brand}".`)
   }
 
-  if (!Object.prototype.hasOwnProperty.call(BRAND_DETAIL_TABLE_MAP, brand)) {
+  return linkedContentFieldName
+}
+
+const getDetailTableName = (brand: BrandId): DetailTableName => {
+  const tableName = BRAND_DETAIL_TABLE_MAP[brand]
+
+  if (!tableName) {
+    throw new Error(`Brak mapowania tabeli szczegółowej dla marki "${brand}".`)
+  }
+
+  return tableName
+}
+
+const normalizeProduct = (
+  record: AirtableRecord,
+  brand: BrandId,
+): ProductListItem | null => {
+  const recordBrand = readString(record.fields, 'Brand')
+  const name = readString(record.fields, 'Name')
+
+  if (recordBrand !== brand || !name) {
     return null
   }
 
   const sku = readString(record.fields, 'SKU') ?? ''
-  const typedBrand = brand as BrandId
-  const detailRecordId = readLinkedRecordId(record.fields)
+  const linkedContentFieldName = getLinkedContentFieldName(brand)
+  const detailRecordId = readLinkedRecordId(record.fields, linkedContentFieldName)
   const label = sku ? `${name} (${sku})` : name
 
   return {
     productRecordId: record.id,
     detailRecordId,
-    brand: typedBrand,
+    brand,
     sku,
     name,
     label,
@@ -75,16 +103,6 @@ const loadMockData = async (): Promise<MockAirtableResponse> => {
   }
 
   return mockDataPromise
-}
-
-const getDetailTableName = (brand: BrandId): DetailTableName => {
-  const tableName = BRAND_DETAIL_TABLE_MAP[brand]
-
-  if (!tableName) {
-    throw new Error(`Brak mapowania tabeli szczegółowej dla marki "${brand}".`)
-  }
-
-  return tableName
 }
 
 const getDetailRecords = (
@@ -106,10 +124,12 @@ export const mockProductsRepository: ProductsRepository = {
     const mockData = await loadMockData()
     const records = mockData.products?.records ?? []
 
+    getLinkedContentFieldName(brand)
+    getDetailTableName(brand)
+
     return records
-      .map(normalizeProduct)
+      .map((record) => normalizeProduct(record, brand))
       .filter((product): product is ProductListItem => product !== null)
-      .filter((product) => product.brand === brand)
   },
 
   async getProductDetail({ brand, detailRecordId }) {

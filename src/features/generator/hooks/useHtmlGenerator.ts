@@ -1,11 +1,12 @@
 import { useState } from 'react'
 
+import { BRAND_LINKED_CONTENT_FIELD_MAP } from '../../../config/brands'
 import {
   generateHtmlDescription,
   generateTextPreview,
 } from '../services/description.service'
 import { getProductDetail } from '../services/products.service'
-import type { GeneratorContext, PreviewBlock } from '../types'
+import type { BrandId, GeneratorContext, PreviewBlock } from '../types'
 
 type GeneratorState = {
   htmlCode: string
@@ -28,13 +29,21 @@ const initialState: GeneratorState = {
 export const useHtmlGenerator = () => {
   const [state, setState] = useState<GeneratorState>(initialState)
 
+  const getMissingDetailRecordMessage = (brand: BrandId) => {
+    const linkedContentFieldName = BRAND_LINKED_CONTENT_FIELD_MAP[brand]
+
+    if (!linkedContentFieldName) {
+      return `Brak mapowania pola linked record dla marki "${brand}".`
+    }
+
+    return `Wybrany produkt nie ma powiązanego rekordu treści w polu "${linkedContentFieldName}" dla marki "${brand}".`
+  }
+
   const resolveContext = async (
     context: Omit<GeneratorContext, 'detailRecord'>,
   ): Promise<GeneratorContext> => {
     if (!context.product.detailRecordId) {
-      throw new Error(
-        'Wybrany produkt nie ma powiązanego rekordu treści w polu BrandContentRecord.',
-      )
+      throw new Error(getMissingDetailRecordMessage(context.brand))
     }
 
     const detailRecord = await getProductDetail({

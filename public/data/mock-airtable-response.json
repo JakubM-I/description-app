@@ -3,62 +3,74 @@
     "records": [
       {
         "id": "recProdLionelo001",
-        "createdTime": "2026-03-19T09:00:00.000Z",
+        "createdTime": "2026-03-22T10:00:00.000Z",
         "fields": {
-          "SKU": "LIO-EMMA-PLUS",
+          "SKU": "LIO-BOX-001",
           "Brand": "lionelo",
-          "Name": "Lionelo Emma Plus",
-          "BrandContentRecord": ["recLioneloContent001"]
+          "Name": "Lionelo Amber 360",
+          "Lionelo_Content": [
+            "recLioneloContent001"
+          ]
         }
       },
       {
         "id": "recProdLionelo002",
-        "createdTime": "2026-03-19T09:05:00.000Z",
+        "createdTime": "2026-03-22T10:01:00.000Z",
         "fields": {
-          "SKU": "LIO-BASTIAAN-I-SIZE",
+          "SKU": "LIO-BOX-002",
           "Brand": "lionelo",
-          "Name": "Lionelo Bastiaan i-Size",
-          "BrandContentRecord": ["recLioneloContent002"]
-        }
-      },
-      {
-        "id": "recProdOvermax001",
-        "createdTime": "2026-03-19T09:10:00.000Z",
-        "fields": {
-          "SKU": "OVX-MULTIPIC-50",
-          "Brand": "overmax",
-          "Name": "Overmax Multipic 5.0",
-          "BrandContentRecord": ["recOvermaxContent001"]
-        }
-      },
-      {
-        "id": "recProdOvermax002",
-        "createdTime": "2026-03-19T09:15:00.000Z",
-        "fields": {
-          "SKU": "OVX-SOUNDBEAT-20",
-          "Brand": "overmax",
-          "Name": "Overmax Soundbeat 2.0",
-          "BrandContentRecord": ["recOvermaxContent002"]
+          "Name": "Lionelo Bastiaan One",
+          "Lionelo_Content": [
+            "recLioneloContent002"
+          ]
         }
       },
       {
         "id": "recProdPeluvio001",
-        "createdTime": "2026-03-19T09:20:00.000Z",
+        "createdTime": "2026-03-22T10:02:00.000Z",
         "fields": {
-          "SKU": "PEL-HAIR-DRY-01",
+          "SKU": "PEL-BOX-001",
           "Brand": "peluvio",
-          "Name": "Peluvio HairDry 01",
-          "BrandContentRecord": ["recPeluvioContent001"]
+          "Name": "Peluvio Boxel",
+          "Peluvio_Content": [
+            "recPeluvioContent001"
+          ]
         }
       },
       {
         "id": "recProdPeluvio002",
-        "createdTime": "2026-03-19T09:25:00.000Z",
+        "createdTime": "2026-03-22T10:03:00.000Z",
         "fields": {
-          "SKU": "PEL-FACE-BRUSH-02",
+          "SKU": "PEL-BOX-002",
           "Brand": "peluvio",
-          "Name": "Peluvio Face Brush 02",
-          "BrandContentRecord": ["recPeluvioContent002"]
+          "Name": "Peluvio Breeze",
+          "Peluvio_Content": [
+            "recPeluvioContent002"
+          ]
+        }
+      },
+      {
+        "id": "recProdOvermax001",
+        "createdTime": "2026-03-22T10:04:00.000Z",
+        "fields": {
+          "SKU": "OVM-BOX-001",
+          "Brand": "overmax",
+          "Name": "Overmax Multipic 5.1",
+          "Overmax_Content": [
+            "recOvermaxContent001"
+          ]
+        }
+      },
+      {
+        "id": "recProdOvermax002",
+        "createdTime": "2026-03-22T10:05:00.000Z",
+        "fields": {
+          "SKU": "OVM-BOX-002",
+          "Brand": "overmax",
+          "Name": "Overmax Camspot 4.7",
+          "Overmax_Content": [
+            "recOvermaxContent002"
+          ]
         }
       }
     ]
@@ -67,68 +79,58 @@
     "records": [
       {
         "id": "recLioneloContent001",
-        "createdTime": "2026-03-19T09:30:00.000Z",
+        "createdTime": "2026-03-22T10:10:00.000Z",
         "fields": {
-          "hero_title": "Spacerówka na co dzień i w podróży",
-          "hero_text": "Lionelo Emma Plus to lekka spacerówka zaprojektowana z myślą o wygodnych spacerach w mieście i poza nim.",
-          "feature_1_title": "Składanie jedną ręką",
-          "feature_1_text": "Szybki mechanizm składania ułatwia pakowanie wózka do bagażnika i codzienne użytkowanie.",
-          "feature_1_path": "/images/lionelo/emma-plus/",
-          "feature_1_picture": "fold.webp",
-          "feature_2_title": "Regulowane oparcie",
-          "feature_2_text": "Płynna regulacja pozwala dopasować pozycję dziecka do aktualnych potrzeb.",
-          "feature_2_path": "/images/lionelo/emma-plus/",
-          "feature_2_picture": "backrest.webp",
-          "set_title": "Zawartość zestawu",
-          "set_text": "W zestawie znajduje się spacerówka, pałąk, osłona na nogi i instrukcja obsługi."
+          "SKU": "LIO-BOX-001",
+          "intro_text_1": "Fotelik zaprojektowany z myślą o codziennym komforcie i bezpieczeństwie.",
+          "intro_slogan": "Wygoda od pierwszej podróży",
+          "intro_text_2": "Przemyślane rozwiązania ułatwiają montaż i użytkowanie na co dzień.",
+          "feature_1_path": "amber-360/features",
+          "feature_1_image": "obrot-360.webp",
+          "feature_1_title": "Obrót 360°",
+          "feature_1_desc": "Ułatwia wkładanie dziecka i szybkie ustawienie fotelika.",
+          "feature_2_path": "amber-360/features",
+          "feature_2_image": "isofix.webp",
+          "feature_2_title": "System ISOFIX",
+          "feature_2_desc": "Stabilny montaż i większe bezpieczeństwo podróży.",
+          "detail_1_path": "amber-360/details",
+          "detail_1_image": "zaglowek.webp",
+          "detail_1_title": "Regulowany zagłówek",
+          "detail_1_desc": "Pozwala dopasować fotelik do wzrostu dziecka.",
+          "detail_2_path": "amber-360/details",
+          "detail_2_image": "wkladka.webp",
+          "detail_2_title": "Wkładka redukcyjna",
+          "detail_2_desc": "Zapewnia lepsze podparcie dla najmłodszych pasażerów.",
+          "set_1_path": "amber-360/sets",
+          "set_1_image": "daszek.webp",
+          "set_1_title": "Daszek przeciwsłoneczny",
+          "set_1_desc": "Dodatkowa ochrona przed słońcem podczas podróży.",
+          "set_2_path": "amber-360/sets",
+          "set_2_image": "wkladka-zestaw.webp",
+          "set_2_title": "Komplet wkładek",
+          "set_2_desc": "Zestaw wspierający komfort użytkowania od pierwszych dni."
         }
       },
       {
         "id": "recLioneloContent002",
-        "createdTime": "2026-03-19T09:35:00.000Z",
+        "createdTime": "2026-03-22T10:11:00.000Z",
         "fields": {
-          "hero_title": "Fotelik zaprojektowany do dłuższego użytkowania",
-          "hero_text": "Lionelo Bastiaan i-Size wspiera bezpieczne podróżowanie dziecka na kolejnych etapach wzrostu.",
-          "safety_title": "Rozwiązania zwiększające bezpieczeństwo",
-          "safety_text": "System ISOFIX, dodatkowa ochrona boczna i możliwość przewożenia tyłem do kierunku jazdy pomagają zadbać o bezpieczeństwo w trasie.",
-          "comfort_title": "Wygoda na co dzień",
-          "comfort_text": "Regulowany zagłówek i wkładka redukcyjna poprawiają komfort podczas krótszych i dłuższych przejazdów.",
-          "gallery_path": "/images/lionelo/bastiaan-isize/",
-          "gallery_main_picture": "hero.webp"
-        }
-      }
-    ]
-  },
-  "overmax_content": {
-    "records": [
-      {
-        "id": "recOvermaxContent001",
-        "createdTime": "2026-03-19T09:40:00.000Z",
-        "fields": {
-          "intro_heading": "Domowa rozrywka na dużym ekranie",
-          "intro_body": "Overmax Multipic 5.0 to kompaktowy projektor do codziennego oglądania filmów, seriali i materiałów wideo.",
-          "benefit_1_title": "Kompaktowa konstrukcja",
-          "benefit_1_text": "Niewielkie rozmiary ułatwiają przenoszenie i ustawienie projektora w różnych pomieszczeniach.",
-          "benefit_2_title": "Łączność bezprzewodowa",
-          "benefit_2_text": "Projektor wspiera wygodne przesyłanie obrazu z kompatybilnych urządzeń mobilnych.",
-          "assets_path": "/images/overmax/multipic-50/",
-          "hero_picture": "projector.webp",
-          "box_title": "W zestawie",
-          "box_text": "Projektor, pilot, zasilacz i instrukcja użytkownika."
-        }
-      },
-      {
-        "id": "recOvermaxContent002",
-        "createdTime": "2026-03-19T09:45:00.000Z",
-        "fields": {
-          "intro_heading": "Muzyka zawsze pod ręką",
-          "intro_body": "Overmax Soundbeat 2.0 to przenośny głośnik Bluetooth zaprojektowany do codziennego słuchania muzyki w domu i poza nim.",
-          "use_case_1_title": "Na taras i do ogrodu",
-          "use_case_1_text": "Kompaktowa forma i odporność na zachlapania wspierają użytkowanie na zewnątrz.",
-          "use_case_2_title": "W podróży",
-          "use_case_2_text": "Lekka obudowa ułatwia zabranie głośnika na wyjazd lub spotkanie ze znajomymi.",
-          "gallery_path": "/images/overmax/soundbeat-20/",
-          "gallery_main_picture": "speaker.webp"
+          "SKU": "LIO-BOX-002",
+          "intro_text_1": "Uniwersalny fotelik do codziennych i dłuższych wyjazdów.",
+          "intro_slogan": "Bezpieczna podróż każdego dnia",
+          "intro_text_2": "Łączy wygodę, prostą obsługę i praktyczne dodatki.",
+          "feature_1_path": "bastiaan-one/features",
+          "feature_1_image": "ochrona-boczna.webp",
+          "feature_1_title": "Ochrona boczna",
+          "feature_1_desc": "Wzmacniana konstrukcja lepiej chroni przy bocznych uderzeniach.",
+          "detail_1_path": "bastiaan-one/details",
+          "detail_1_image": "regulacja.webp",
+          "detail_1_title": "Wielostopniowa regulacja",
+          "detail_1_desc": "Łatwe dopasowanie ustawień do wieku i wzrostu dziecka.",
+          "set_1_path": "bastiaan-one/sets",
+          "set_1_image": "ochraniacz.webp",
+          "set_1_title": "Ochraniacze pasów",
+          "set_1_desc": "Miękkie osłony zwiększające komfort podróży."
         }
       }
     ]
@@ -137,32 +139,68 @@
     "records": [
       {
         "id": "recPeluvioContent001",
-        "createdTime": "2026-03-19T09:50:00.000Z",
+        "createdTime": "2026-03-22T10:20:00.000Z",
         "fields": {
-          "lead_title": "Szybsze suszenie i wygodna stylizacja",
-          "lead_text": "Peluvio HairDry 01 pomaga sprawnie wysuszyć włosy i przygotować fryzurę na co dzień.",
-          "benefit_primary_title": "Regulacja temperatury",
-          "benefit_primary_text": "Kilka poziomów temperatury ułatwia dopasowanie pracy suszarki do rodzaju włosów i oczekiwanego efektu.",
-          "routine_step_1_title": "Codzienne suszenie",
-          "routine_step_1_text": "Ergonomiczny uchwyt i wygodna konstrukcja wspierają komfort użytkowania.",
-          "asset_base_path": "/images/peluvio/hairdry-01/",
-          "hero_picture": "dryer.webp"
+          "SKU": "PEL-BOX-001",
+          "description_title": "Peluvio Boxel",
+          "description_text": "Nowoczesny masażer do codziennej pielęgnacji i regeneracji mięśni.",
+          "feature_1_title": "Lekka konstrukcja",
+          "feature_1_text": "Wygodny w przenoszeniu i użytkowaniu w domu oraz w podróży.",
+          "feature_2_title": "Prosta obsługa",
+          "feature_2_text": "Intuicyjny panel sterowania pozwala szybko wybrać tryb pracy.",
+          "feature_3_title": "Codzienny relaks",
+          "feature_3_text": "Pomaga zmniejszyć napięcie po intensywnym dniu."
         }
       },
       {
         "id": "recPeluvioContent002",
-        "createdTime": "2026-03-19T09:55:00.000Z",
+        "createdTime": "2026-03-22T10:21:00.000Z",
         "fields": {
-          "lead_title": "Codzienna pielęgnacja skóry twarzy",
-          "lead_text": "Peluvio Face Brush 02 wspiera delikatne oczyszczanie skóry i wygodną pielęgnację w domu oraz w podróży.",
-          "benefit_primary_title": "Kompaktowy format",
-          "benefit_primary_text": "Niewielkie rozmiary ułatwiają przechowywanie urządzenia i zabranie go do kosmetyczki.",
-          "routine_step_1_title": "Użycie w łazience",
-          "routine_step_1_text": "Wodoodporna konstrukcja poprawia wygodę codziennego użytkowania.",
-          "routine_step_2_title": "Ładowanie USB",
-          "routine_step_2_text": "Urządzenie można wygodnie ładować za pomocą dołączonego przewodu.",
-          "asset_base_path": "/images/peluvio/face-brush-02/",
-          "hero_picture": "face-brush.webp"
+          "SKU": "PEL-BOX-002",
+          "description_title": "Peluvio Breeze",
+          "description_text": "Kompaktowe urządzenie wspierające komfort i odprężenie po pracy.",
+          "feature_1_title": "Smukła forma",
+          "feature_1_text": "Łatwo mieści się w domowej przestrzeni i nie zajmuje dużo miejsca.",
+          "feature_2_title": "Spokojna praca",
+          "feature_2_text": "Przyjemne użytkowanie bez nadmiernego hałasu."
+        }
+      }
+    ]
+  },
+  "overmax_content": {
+    "records": [
+      {
+        "id": "recOvermaxContent001",
+        "createdTime": "2026-03-22T10:30:00.000Z",
+        "fields": {
+          "SKU": "OVM-BOX-001",
+          "detail_1_path": "multipic-5-1/details",
+          "detail_1_image": "kino-domowe.webp",
+          "detail_1_title": "Duży obraz w domu i w podróży",
+          "detail_1_text": "Projektor sprawdzi się podczas wieczorów filmowych, prezentacji i gier.",
+          "detail_2_path": "multipic-5-1/details",
+          "detail_2_image": "mobilnosc.webp",
+          "detail_2_title": "Wygodna mobilność",
+          "detail_2_text": "Kompaktowa konstrukcja ułatwia przenoszenie i szybkie ustawienie."
+        }
+      },
+      {
+        "id": "recOvermaxContent002",
+        "createdTime": "2026-03-22T10:31:00.000Z",
+        "fields": {
+          "SKU": "OVM-BOX-002",
+          "detail_1_path": "camspot-4-7/details",
+          "detail_1_image": "monitoring.webp",
+          "detail_1_title": "Stały podgląd otoczenia",
+          "detail_1_text": "Kamera pozwala wygodnie monitorować dom lub biuro z poziomu aplikacji.",
+          "detail_2_path": "camspot-4-7/details",
+          "detail_2_image": "noc.webp",
+          "detail_2_title": "Widzenie nocne",
+          "detail_2_text": "Czytelny obraz również po zmroku i w słabym oświetleniu.",
+          "detail_3_path": "camspot-4-7/details",
+          "detail_3_image": "powiadomienia.webp",
+          "detail_3_title": "Powiadomienia o ruchu",
+          "detail_3_text": "Szybka reakcja dzięki alertom wysyłanym na telefon."
         }
       }
     ]

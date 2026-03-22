@@ -131,8 +131,10 @@ export const App = () => {
               </h2>
               <p className="panel__text">
                 Lista produktów jest pobierana z tabeli <code>products</code> w
-                lokalnym mocku, a właściwy rekord szczegółowy jest odczytywany po
-                <code> BrandContentRecord[0]</code> dopiero przy generowaniu wyniku.
+                lokalnym mocku, a właściwy rekord szczegółowy jest odczytywany z
+                brand-specific pola linked record (
+                <code>Lionelo_Content</code>, <code>Peluvio_Content</code>,
+                <code>Overmax_Content</code>) dopiero przy generowaniu wyniku.
               </p>
             </div>
 

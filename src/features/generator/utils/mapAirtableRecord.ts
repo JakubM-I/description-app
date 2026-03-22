@@ -4,8 +4,14 @@ import type {
   AirtableRecordFields,
   BrandContentDocument,
   BrandId,
-  ContentBlock,
-  ContentSection,
+  LioneloDescriptionData,
+  LioneloIntro,
+  LioneloSectionItem,
+  OvermaxDescriptionData,
+  OvermaxDetailItem,
+  PeluvioDescriptionData,
+  PeluvioFeatureItem,
+  PeluvioHero,
 } from '../types'
 
 const readString = (
@@ -16,188 +22,292 @@ const readString = (
     const value = fields[key]
 
     if (typeof value === 'string' && value.trim()) {
-      return value
+      return value.trim()
     }
   }
 
   return null
 }
 
-const hasBlockContent = (block: ContentBlock) =>
-  Boolean(block.title || block.text || block.imageUrl)
+const hasTextContent = (values: Array<string | null>) => values.some(Boolean)
 
-const createBlock = (params: {
+const createImageData = (params: {
+  path: string | null
+  image: string | null
+  alt: string | null
+}) => {
+  const imageUrl =
+    params.alt && params.path && params.image
+      ? buildImageUrl(params.path, params.image)
+      : null
+
+  return {
+    imageUrl,
+    imageAlt: imageUrl ? params.alt : null,
+  }
+}
+
+const createLioneloItem = (params: {
+  title: string | null
+  desc: string | null
+  path: string | null
+  image: string | null
+}): LioneloSectionItem | null => {
+  if (!hasTextContent([params.title, params.desc])) {
+    return null
+  }
+
+  const imageData = createImageData({
+    path: params.path,
+    image: params.image,
+    alt: params.title,
+  })
+
+  return {
+    title: params.title,
+    desc: params.desc,
+    imageUrl: imageData.imageUrl,
+    imageAlt: imageData.imageAlt,
+  }
+}
+
+const createPeluvioFeatureItem = (params: {
   title: string | null
   text: string | null
-  imageUrl?: string | null
-}): ContentBlock => ({
-  title: params.title,
-  text: params.text,
-  imageUrl: params.imageUrl ?? null,
-})
-
-const createSection = (
-  id: string,
-  title: string,
-  items: ContentBlock[],
-): ContentSection | null => {
-  const visibleItems = items.filter(hasBlockContent)
-
-  if (visibleItems.length === 0) {
+}): PeluvioFeatureItem | null => {
+  if (!hasTextContent([params.title, params.text])) {
     return null
   }
 
   return {
-    id,
-    title,
-    items: visibleItems,
+    title: params.title,
+    text: params.text,
   }
 }
 
-const collectIndexedBlocks = (
+const createOvermaxDetailItem = (params: {
+  index: number
+  title: string | null
+  text: string | null
+  path: string | null
+  image: string | null
+}): OvermaxDetailItem | null => {
+  if (!hasTextContent([params.title, params.text])) {
+    return null
+  }
+
+  const popupKey = `item${params.index}`
+  const imageData = createImageData({
+    path: params.path,
+    image: params.image,
+    alt: params.title,
+  })
+
+  return {
+    id: popupKey,
+    titleId: `title-${popupKey}`,
+    popupHeadingId: `popup-heading-${popupKey}`,
+    popupKey,
+    title: params.title,
+    text: params.text,
+    imageUrl: imageData.imageUrl,
+    imageAlt: imageData.imageAlt,
+  }
+}
+
+const mapLioneloIntro = (fields: AirtableRecordFields): LioneloIntro | null => {
+  const intro = {
+    text1: readString(fields, ['intro_text_1', 'hero_text']),
+    slogan: readString(fields, ['intro_slogan', 'hero_title']),
+    text2: readString(fields, ['intro_text_2']),
+  }
+
+  return hasTextContent([intro.text1, intro.slogan, intro.text2]) ? intro : null
+}
+
+const collectLioneloItems = (
   fields: AirtableRecordFields,
   params: {
-    maxItems?: number
     titleKeys: (index: number) => string[]
-    textKeys: (index: number) => string[]
+    descKeys: (index: number) => string[]
     pathKeys?: (index: number) => string[]
     imageKeys?: (index: number) => string[]
+    maxItems?: number
   },
 ) => {
-  const blocks: ContentBlock[] = []
+  const items: LioneloSectionItem[] = []
   const maxItems = params.maxItems ?? 6
 
   for (let index = 1; index <= maxItems; index += 1) {
-    const title = readString(fields, params.titleKeys(index))
-    const text = readString(fields, params.textKeys(index))
-    const path = params.pathKeys ? readString(fields, params.pathKeys(index)) : null
-    const image = params.imageKeys
-      ? readString(fields, params.imageKeys(index))
-      : null
-
-    const block = createBlock({
-      title,
-      text,
-      imageUrl: buildImageUrl(path, image),
+    const item = createLioneloItem({
+      title: readString(fields, params.titleKeys(index)),
+      desc: readString(fields, params.descKeys(index)),
+      path: params.pathKeys ? readString(fields, params.pathKeys(index)) : null,
+      image: params.imageKeys ? readString(fields, params.imageKeys(index)) : null,
     })
 
-    if (hasBlockContent(block)) {
-      blocks.push(block)
+    if (item) {
+      items.push(item)
     }
   }
 
-  return blocks
+  return items
 }
 
 const mapLioneloRecord = (
   fields: AirtableRecordFields,
-): BrandContentDocument => {
-  const intro = createBlock({
-    title: readString(fields, ['hero_title', 'intro_slogan']),
-    text: readString(fields, ['hero_text', 'intro_text_1', 'intro_text_2']),
-  })
-
-  const features = collectIndexedBlocks(fields, {
+): LioneloDescriptionData => {
+  const features = collectLioneloItems(fields, {
     titleKeys: (index) => [`feature_${index}_title`],
-    textKeys: (index) => [`feature_${index}_text`, `feature_${index}_desc`],
+    descKeys: (index) => [`feature_${index}_desc`, `feature_${index}_text`],
     pathKeys: (index) => [`feature_${index}_path`],
-    imageKeys: (index) => [`feature_${index}_picture`, `feature_${index}_image`],
+    imageKeys: (index) => [`feature_${index}_image`, `feature_${index}_picture`],
   })
 
-  const details = collectIndexedBlocks(fields, {
-    titleKeys: (index) => [`detail_${index}_title`],
-    textKeys: (index) => [`detail_${index}_text`, `detail_${index}_desc`],
+  const details = collectLioneloItems(fields, {
+    titleKeys: (index) => {
+      if (index === 1) {
+        return ['detail_1_title', 'safety_title']
+      }
+
+      if (index === 2) {
+        return ['detail_2_title', 'comfort_title']
+      }
+
+      return [`detail_${index}_title`]
+    },
+    descKeys: (index) => {
+      if (index === 1) {
+        return ['detail_1_desc', 'detail_1_text', 'safety_text']
+      }
+
+      if (index === 2) {
+        return ['detail_2_desc', 'detail_2_text', 'comfort_text']
+      }
+
+      return [`detail_${index}_desc`, `detail_${index}_text`]
+    },
     pathKeys: (index) => [`detail_${index}_path`],
-    imageKeys: (index) => [`detail_${index}_picture`, `detail_${index}_image`],
+    imageKeys: (index) => [`detail_${index}_image`, `detail_${index}_picture`],
   })
 
-  const setBlock = createBlock({
-    title: readString(fields, ['set_title']),
-    text: readString(fields, ['set_text']),
+  const sets = collectLioneloItems(fields, {
+    titleKeys: (index) => (index === 1 ? ['set_1_title', 'set_title'] : [`set_${index}_title`]),
+    descKeys: (index) =>
+      index === 1
+        ? ['set_1_desc', 'set_1_text', 'set_text']
+        : [`set_${index}_desc`, `set_${index}_text`],
+    pathKeys: (index) => [`set_${index}_path`],
+    imageKeys: (index) => [`set_${index}_image`, `set_${index}_picture`],
   })
 
   return {
     brand: 'lionelo',
-    intro: hasBlockContent(intro) ? intro : null,
-    sections: [
-      createSection('features', 'Cechy szczególne', features),
-      createSection('details', 'Szczegóły produktu', details),
-      createSection('sets', 'Dodatkowo w zestawie', [setBlock]),
-    ].filter((section): section is ContentSection => section !== null),
+    intro: mapLioneloIntro(fields),
+    features,
+    details,
+    sets,
   }
 }
 
-const mapOvermaxRecord = (
-  fields: AirtableRecordFields,
-): BrandContentDocument => {
-  const intro = createBlock({
-    title: readString(fields, ['intro_heading']),
-    text: readString(fields, ['intro_body']),
-    imageUrl: buildImageUrl(
-      readString(fields, ['assets_path', 'gallery_path']),
-      readString(fields, ['hero_picture', 'gallery_main_picture']),
-    ),
-  })
+const mapPeluvioHero = (fields: AirtableRecordFields): PeluvioHero | null => {
+  const title = readString(fields, ['description_title', 'lead_title'])
+  const text = readString(fields, ['description_text', 'lead_text'])
 
-  const benefitDetails = collectIndexedBlocks(fields, {
-    titleKeys: (index) => [`benefit_${index}_title`, `detail_${index}_title`],
-    textKeys: (index) => [`benefit_${index}_text`, `detail_${index}_text`],
-  })
+  if (!hasTextContent([title, text])) {
+    return null
+  }
 
-  const useCaseDetails = collectIndexedBlocks(fields, {
-    titleKeys: (index) => [`use_case_${index}_title`],
-    textKeys: (index) => [`use_case_${index}_text`],
-  })
-
-  const boxBlock = createBlock({
-    title: readString(fields, ['box_title']),
-    text: readString(fields, ['box_text']),
+  const imageData = createImageData({
+    path: readString(fields, ['description_image_path', 'asset_base_path']),
+    image: readString(fields, ['description_image', 'hero_picture']),
+    alt: title,
   })
 
   return {
-    brand: 'overmax',
-    intro: hasBlockContent(intro) ? intro : null,
-    sections: [
-      createSection('details', 'Szczegóły', [
-        ...benefitDetails,
-        ...useCaseDetails,
-        boxBlock,
-      ]),
-    ].filter((section): section is ContentSection => section !== null),
+    title,
+    text,
+    imageUrl: imageData.imageUrl,
+    imageAlt: imageData.imageAlt,
   }
 }
 
 const mapPeluvioRecord = (
   fields: AirtableRecordFields,
-): BrandContentDocument => {
-  const intro = createBlock({
-    title: readString(fields, ['description_title', 'lead_title']),
-    text: readString(fields, ['description_text', 'lead_text']),
-    imageUrl: buildImageUrl(
-      readString(fields, ['asset_base_path']),
-      readString(fields, ['hero_picture']),
-    ),
-  })
+): PeluvioDescriptionData => {
+  const features: PeluvioFeatureItem[] = []
 
-  const primaryFeature = createBlock({
+  const primaryFeature = createPeluvioFeatureItem({
     title: readString(fields, ['benefit_primary_title']),
     text: readString(fields, ['benefit_primary_text']),
   })
 
-  const featureBlocks = collectIndexedBlocks(fields, {
-    titleKeys: (index) => [`feature_${index}_title`, `routine_step_${index}_title`],
-    textKeys: (index) => [`feature_${index}_text`, `routine_step_${index}_text`],
-  })
+  if (primaryFeature) {
+    features.push(primaryFeature)
+  }
+
+  for (let index = 1; index <= 6; index += 1) {
+    const feature = createPeluvioFeatureItem({
+      title: readString(fields, [`feature_${index}_title`, `routine_step_${index}_title`]),
+      text: readString(fields, [`feature_${index}_text`, `routine_step_${index}_text`]),
+    })
+
+    if (feature) {
+      features.push(feature)
+    }
+  }
 
   return {
     brand: 'peluvio',
-    intro: hasBlockContent(intro) ? intro : null,
-    sections: [
-      createSection('features', 'Zalety produktu', [
-        primaryFeature,
-        ...featureBlocks,
+    hero: mapPeluvioHero(fields),
+    features,
+  }
+}
+
+const mapOvermaxRecord = (
+  fields: AirtableRecordFields,
+): OvermaxDescriptionData => {
+  const details: OvermaxDetailItem[] = []
+  const sharedPath = readString(fields, ['assets_path', 'gallery_path'])
+  const sharedImage = readString(fields, ['hero_picture', 'gallery_main_picture'])
+
+  for (let index = 1; index <= 6; index += 1) {
+    const detail = createOvermaxDetailItem({
+      index,
+      title: readString(fields, [
+        `detail_${index}_title`,
+        `benefit_${index}_title`,
+        `use_case_${index}_title`,
       ]),
-    ].filter((section): section is ContentSection => section !== null),
+      text: readString(fields, [
+        `detail_${index}_text`,
+        `benefit_${index}_text`,
+        `use_case_${index}_text`,
+      ]),
+      path: readString(fields, [`detail_${index}_path`]) ?? sharedPath,
+      image: readString(fields, [`detail_${index}_image`, `detail_${index}_picture`]) ?? sharedImage,
+    })
+
+    if (detail) {
+      details.push(detail)
+    }
+  }
+
+  const boxItem = createOvermaxDetailItem({
+    index: details.length + 1,
+    title: readString(fields, ['box_title']),
+    text: readString(fields, ['box_text']),
+    path: sharedPath,
+    image: sharedImage,
+  })
+
+  if (boxItem) {
+    details.push(boxItem)
+  }
+
+  return {
+    brand: 'overmax',
+    details,
   }
 }
 

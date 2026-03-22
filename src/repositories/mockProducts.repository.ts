@@ -119,6 +119,29 @@ const getDetailRecords = (
   return table.records
 }
 
+const getProductRecord = (
+  mockData: MockAirtableResponse,
+  brand: BrandId,
+  productRecordId: string,
+) => {
+  const records = mockData.products?.records ?? []
+  const productRecord = records.find((record) => record.id === productRecordId)
+
+  if (!productRecord) {
+    throw new Error(`Nie znaleziono produktu "${productRecordId}".`)
+  }
+
+  const recordBrand = readString(productRecord.fields, 'Brand')
+
+  if (recordBrand !== brand) {
+    throw new Error(
+      `Produkt "${productRecordId}" nie należy do marki "${brand}".`,
+    )
+  }
+
+  return productRecord
+}
+
 export const mockProductsRepository: ProductsRepository = {
   async getProductsByBrand(brand) {
     const mockData = await loadMockData()
@@ -132,8 +155,21 @@ export const mockProductsRepository: ProductsRepository = {
       .filter((product): product is ProductListItem => product !== null)
   },
 
-  async getProductDetail({ brand, detailRecordId }) {
+  async getProductDetail({ brand, productRecordId }) {
     const mockData = await loadMockData()
+    const productRecord = getProductRecord(mockData, brand, productRecordId)
+    const linkedContentFieldName = getLinkedContentFieldName(brand)
+    const detailRecordId = readLinkedRecordId(
+      productRecord.fields,
+      linkedContentFieldName,
+    )
+
+    if (!detailRecordId) {
+      throw new Error(
+        `Produkt "${productRecordId}" nie ma powiązanego rekordu treści w polu "${linkedContentFieldName}".`,
+      )
+    }
+
     const detailRecords = getDetailRecords(mockData, brand)
     const detailRecord = detailRecords.find((record) => record.id === detailRecordId)
 

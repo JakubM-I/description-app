@@ -14,6 +14,10 @@ import type { BrandId } from '../features/generator/types'
 export const App = () => {
   const [selectedBrand, setSelectedBrand] = useState<BrandId | null>(null)
   const [selectedProductId, setSelectedProductId] = useState('')
+  const isAirtableSource = import.meta.env.VITE_DATA_SOURCE === 'airtable'
+  const dataSourceLabel = isAirtableSource
+    ? 'Airtable przez Netlify Functions'
+    : 'lokalny mock danych'
 
   const { products, isLoading, error: productsError } = useProducts(selectedBrand)
   const generator = useHtmlGenerator()
@@ -78,7 +82,7 @@ export const App = () => {
     if (!selectedBrand) {
       return {
         tone: 'default',
-        text: 'Wybierz markę, aby wczytać listę produktów z lokalnego mocka.',
+        text: `Wybierz markę, aby wczytać listę produktów z: ${dataSourceLabel}.`,
       }
     }
 
@@ -92,7 +96,7 @@ export const App = () => {
     if (products.length === 0) {
       return {
         tone: 'default',
-        text: 'Brak produktów dla wybranej marki w lokalnym mocku danych.',
+        text: `Brak produktów dla wybranej marki w źródle danych: ${dataSourceLabel}.`,
       }
     }
 
@@ -116,9 +120,9 @@ export const App = () => {
           <p className="app-shell__eyebrow">Etap 1 • mock data + UI flow</p>
           <h1 className="app-shell__title">Generator opisów produktów</h1>
           <p className="app-shell__lead">
-            Aplikacja działa lokalnie na mock danych i prowadzi przez pełny,
-            podstawowy przepływ: wybór marki, wybór produktu, generowanie HTML
-            oraz tekstowego podglądu w osobnych modalach.
+            Aplikacja prowadzi przez pełny, podstawowy przepływ: wybór marki,
+            wybór produktu, generowanie HTML oraz tekstowego podglądu w osobnych
+            modalach. Źródło danych jest przełączane konfiguracją środowiskową.
           </p>
         </header>
 
@@ -130,9 +134,9 @@ export const App = () => {
                 Etap 1: wybierz markę i produkt
               </h2>
               <p className="panel__text">
-                Lista produktów jest pobierana z tabeli <code>products</code> w
-                lokalnym mocku, a właściwy rekord szczegółowy jest odczytywany z
-                brand-specific pola linked record (
+                Lista produktów jest pobierana z tabeli <code>products</code>, a
+                właściwy rekord szczegółowy jest odczytywany z brand-specific pola
+                linked record (
                 <code>Lionelo_Content</code>, <code>Peluvio_Content</code>,
                 <code>Overmax_Content</code>) dopiero przy generowaniu wyniku.
               </p>

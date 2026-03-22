@@ -10,7 +10,7 @@ export interface ProductsRepository {
   getProductsByBrand(brand: BrandId): Promise<ProductListItem[]>
   getProductDetail(params: {
     brand: BrandId
-    detailRecordId: string
+    productRecordId: string
   }): Promise<AirtableRecord | null>
 }
 

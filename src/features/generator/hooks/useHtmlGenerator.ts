@@ -48,7 +48,7 @@ export const useHtmlGenerator = () => {
 
     const detailRecord = await getProductDetail({
       brand: context.brand,
-      detailRecordId: context.product.detailRecordId,
+      productRecordId: context.product.productRecordId,
     })
 
     if (!detailRecord) {

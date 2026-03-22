@@ -13,5 +13,5 @@ export const getProductsByBrand = (brand: BrandId) =>
 
 export const getProductDetail = (params: {
   brand: BrandId
-  detailRecordId: string
+  productRecordId: string
 }) => repository.getProductDetail(params)

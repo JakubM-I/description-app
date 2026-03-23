@@ -19,9 +19,9 @@ export const ProductSelector = ({
   const hint = disabled
     ? 'Najpierw wybierz markę.'
     : isLoading
-      ? 'Ładowanie listy produktów z lokalnego mocka...'
+      ? 'Ładowanie produktów...'
       : products.length === 0
-        ? 'Dla tej marki nie ma jeszcze produktów w mock danych.'
+        ? 'Brak produktów dla wybranej marki.'
         : undefined
 
   return (

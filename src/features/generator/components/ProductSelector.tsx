@@ -22,7 +22,7 @@ export const ProductSelector = ({
       ? 'Ładowanie listy produktów z lokalnego mocka...'
       : products.length === 0
         ? 'Dla tej marki nie ma jeszcze produktów w mock danych.'
-        : 'Lista produktów pochodzi z tabeli products w lokalnym mock JSON.'
+        : undefined
 
   return (
     <Select

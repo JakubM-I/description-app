@@ -355,6 +355,15 @@ textarea {
   gap: 12px;
 }
 
+.preview-panel__actions {
+  position: sticky;
+  bottom: 0;
+  display: flex;
+  justify-content: flex-end;
+  padding-top: 12px;
+  background: linear-gradient(180deg, rgba(255, 253, 249, 0) 0%, #fffdf9 28%);
+}
+
 .preview-panel__block {
   padding: 18px;
   border-radius: 18px;
@@ -389,7 +398,8 @@ textarea {
   }
 
   .result-panel__actions,
-  .generator-form__actions {
+  .generator-form__actions,
+  .preview-panel__actions {
     flex-direction: column;
   }
 

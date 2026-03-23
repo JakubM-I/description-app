@@ -10,7 +10,7 @@ type BrandSelectorProps = {
 export const BrandSelector = ({ value, onChange }: BrandSelectorProps) => (
   <Select
     id="brand"
-    hint="Wybór marki ładuje listę produktów z lokalnego mocka i czyści poprzedni wybór produktu."
+    hint="Wybierz markę, by załadować produkty."
     label="Marka"
     options={BRAND_OPTIONS.map((brand) => ({
       value: brand.id,

@@ -82,7 +82,7 @@ export const App = () => {
     if (!selectedBrand) {
       return {
         tone: 'default',
-        text: `Wybierz markę, aby wczytać listę produktów z: ${dataSourceLabel}.`,
+        text: 'Wybierz markę, aby wczytać listę produktów.',
       }
     }
 

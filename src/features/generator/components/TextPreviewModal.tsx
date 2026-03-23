@@ -34,7 +34,7 @@ export const TextPreviewModal = ({
           ))
         )}
       </div>
-      <div className="result-panel__actions">
+      <div className="preview-panel__actions">
         <Button variant="secondary" onClick={onClose}>
           Zamknij
         </Button>
